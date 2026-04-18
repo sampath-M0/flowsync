@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — FlowSync</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loading">
+  <div class="loading-logo">⚡ FlowSync</div>
+  <div class="spinner"></div>
+</div>
+
+<div class="app-layout" id="app" style="display:none">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">⚡</div>
+        <span class="gradient-text">FlowSync</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Main</div>
+      <a href="dashboard.html" class="sidebar-link active" id="nav-dashboard">
+        <span class="icon">📊</span> Dashboard
+      </a>
+      <a href="workflows.html" class="sidebar-link" id="nav-workflows">
+        <span class="icon">⚡</span> Workflows
+      </a>
+      <a href="team.html" class="sidebar-link" id="nav-team">
+        <span class="icon">👥</span> Team
+      </a>
+
+      <div class="sidebar-section-title">Insights</div>
+      <a href="analytics.html" class="sidebar-link" id="nav-analytics">
+        <span class="icon">📈</span> Analytics
+      </a>
+
+      <div class="sidebar-section-title">Account</div>
+      <a href="settings.html" class="sidebar-link" id="nav-settings">
+        <span class="icon">⚙️</span> Settings
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-plan-box">
+        <div class="sidebar-plan-label">Current Plan</div>
+        <div class="sidebar-plan-name" id="sidebar-plan">Free</div>
+      </div>
+      <div class="sidebar-user" id="sidebar-user" onclick="window.location.href='settings.html'">
+        <div class="sidebar-avatar" id="sidebar-avatar">?</div>
+        <div>
+          <div class="sidebar-user-name" id="sidebar-name">Loading...</div>
+          <div class="sidebar-user-role" id="sidebar-role">Admin</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+        <div class="topbar-title">Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <a href="workflows.html" class="btn btn-primary btn-sm" id="new-workflow-btn">+ New Workflow</a>
+        <button class="btn btn-ghost btn-sm" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="page-content">
+
+      <!-- Welcome Banner -->
+      <div class="card" style="margin-bottom: var(--space-8); background: linear-gradient(135deg, hsla(246,83%,65%,0.1), hsla(280,80%,70%,0.1)); border-color: var(--border-brand);">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 style="font-size:1.3rem; margin-bottom:4px">Good day, <span id="welcome-name">User</span> 👋</h2>
+            <p class="text-secondary text-sm" id="welcome-date">Loading...</p>
+          </div>
+          <div style="font-size:2.5rem">🚀</div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card stat-card-blue">
+          <div class="stat-card-header">
+            <div class="stat-card-icon icon-blue">⚡</div>
+            <span class="stat-card-trend trend-up">Active</span>
+          </div>
+          <div class="stat-card-value" id="stat-active">—</div>
+          <div class="stat-card-label">Active Workflows</div>
+        </div>
+        <div class="stat-card stat-card-green">
+          <div class="stat-card-header">
+            <div class="stat-card-icon icon-green">✅</div>
+            <span class="stat-card-trend trend-up">Done</span>
+          </div>
+          <div class="stat-card-value" id="stat-completed">—</div>
+          <div class="stat-card-label">Completed Workflows</div>
+        </div>
+        <div class="stat-card stat-card-orange">
+          <div class="stat-card-header">
+            <div class="stat-card-icon icon-orange">⏳</div>
+            <span class="stat-card-trend trend-neutral">Pending</span>
+          </div>
+          <div class="stat-card-value" id="stat-pending">—</div>
+          <div class="stat-card-label">Pending Tasks</div>
+        </div>
+        <div class="stat-card stat-card-purple">
+          <div class="stat-card-header">
+            <div class="stat-card-icon icon-purple">👥</div>
+            <span class="stat-card-trend trend-up">Team</span>
+          </div>
+          <div class="stat-card-value" id="stat-members">—</div>
+          <div class="stat-card-label">Team Members</div>
+        </div>
+      </div>
+
+      <!-- Recent Workflows -->
+      <div class="section-header-app">
+        <h2>Recent Workflows</h2>
+        <a href="workflows.html" class="btn btn-ghost btn-sm">View All →</a>
+      </div>
+
+      <div id="recent-workflows-container">
+        <div class="empty-state">
+          <div class="empty-state-icon">⚡</div>
+          <h3>No workflows yet</h3>
+          <p>Create your first workflow to get started.</p>
+          <a href="workflows.html" class="btn btn-primary btn-sm" style="margin-top:8px">Create Workflow</a>
+        </div>
+      </div>
+
+      <!-- Team Activity -->
+      <div style="margin-top: var(--space-8)">
+        <div class="section-header-app">
+          <h2>Team Overview</h2>
+          <a href="team.html" class="btn btn-ghost btn-sm">Manage →</a>
+        </div>
+
+        <div id="team-overview-container">
+          <div class="card">
+            <p class="text-secondary text-sm" style="text-align:center; padding: var(--space-4) 0">Loading team data...</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase.js"></script>
+<script>
+  var sb = FlowSync.sb;
+  var escHtml = FlowSync.escHtml;
+  var statusLabel = FlowSync.statusLabel;
+  var statusBadgeClass = FlowSync.statusBadgeClass;
+  var formatDate = FlowSync.formatDate;
+  var showToast = FlowSync.showToast;
+
+  var currentUser, profile, org;
+
+  async function init() {
+    var session = await FlowSync.requireAuth();
+    if (!session) return;
+    currentUser = session.user;
+    profile = await FlowSync.getProfile(currentUser.id);
+    org = await FlowSync.getUserOrg(currentUser.id);
+
+    // Update UI
+    var name = (profile && profile.name) || (currentUser.email ? currentUser.email.split('@')[0] : 'User');
+    document.getElementById('welcome-name').textContent = name;
+    document.getElementById('sidebar-name').textContent = name;
+    document.getElementById('sidebar-avatar').textContent = name[0].toUpperCase();
+    document.getElementById('sidebar-role').textContent = (profile && profile.role === 'admin') ? 'Admin' : 'Member';
+    document.getElementById('welcome-date').textContent = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+    var plan = (profile && profile.plan) || 'free';
+    var planEl = document.getElementById('sidebar-plan');
+    planEl.textContent = plan === 'pro' ? '✨ Pro' : '🆓 Free';
+    planEl.className = 'sidebar-plan-name plan-' + plan;
+
+    if (org) {
+      await loadStats(org.id);
+      await loadRecentWorkflows(org.id);
+      await loadTeamOverview(org.id);
+    }
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+  }
+
+  async function loadStats(orgId) {
+    var results = await Promise.all([
+      sb.from('workflows').select('id, status').eq('organization_id', orgId),
+      sb.from('team_members').select('id').eq('organization_id', orgId)
+    ]);
+    var wf = results[0].data || [];
+    var members = results[1].data || [];
+
+    var active = wf.filter(function(w) { return w.status === 'in_progress'; }).length;
+    var completed = wf.filter(function(w) { return w.status === 'completed'; }).length;
+
+    // Pending steps
+    var wfIds = wf.map(function(w) { return w.id; });
+    var pendingCount = 0;
+    if (wfIds.length > 0) {
+      var stepsResult = await sb.from('steps')
+        .select('id').in('workflow_id', wfIds)
+        .neq('status', 'completed');
+      pendingCount = (stepsResult.data && stepsResult.data.length) || 0;
+    }
+
+    document.getElementById('stat-active').textContent = active;
+    document.getElementById('stat-completed').textContent = completed;
+    document.getElementById('stat-pending').textContent = pendingCount;
+    document.getElementById('stat-members').textContent = members.length + 1; // +1 for owner
+  }
+
+  async function loadRecentWorkflows(orgId) {
+    var result = await sb
+      .from('workflows')
+      .select('*, steps(id, status)')
+      .eq('organization_id', orgId)
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    var workflows = result.data;
+    var container = document.getElementById('recent-workflows-container');
+    if (!workflows || workflows.length === 0) return;
+
+    container.innerHTML = '<div class="workflows-grid">' + workflows.map(function(w) {
+      var steps = w.steps || [];
+      var total = steps.length;
+      var done = steps.filter(function(s) { return s.status === 'completed'; }).length;
+      var pct = total > 0 ? Math.round((done/total)*100) : 0;
+      var badgeClass = statusBadgeClass(w.status);
+      return '<div class="workflow-card" onclick="window.location.href=\'workflow-detail.html?id=' + w.id + '\'">' +
+        '<div class="workflow-card-header">' +
+          '<div class="workflow-card-title">' + escHtml(w.title) + '</div>' +
+          '<span class="badge ' + badgeClass + '">' + statusLabel(w.status) + '</span>' +
+        '</div>' +
+        '<p class="workflow-card-desc">' + escHtml(w.description || 'No description provided.') + '</p>' +
+        '<div class="workflow-progress">' +
+          '<div class="workflow-progress-label"><span>Progress</span><span>' + pct + '%</span></div>' +
+          '<div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+        '</div>' +
+        '<div class="workflow-card-footer">' +
+          '<div class="workflow-meta"><span>📋 ' + total + ' steps</span><span>🗓 ' + formatDate(w.created_at) + '</span></div>' +
+        '</div>' +
+      '</div>';
+    }).join('') + '</div>';
+  }
+
+  async function loadTeamOverview(orgId) {
+    var result = await sb
+      .from('team_members')
+      .select('*')
+      .eq('organization_id', orgId)
+      .limit(4);
+
+    var members = result.data;
+    var container = document.getElementById('team-overview-container');
+    if (!members || members.length === 0) {
+      container.innerHTML = '<div class="card"><p class="text-secondary text-sm" style="text-align:center;padding:var(--space-4) 0">No team members yet. <a href="team.html" style="color:var(--brand-primary)">Add your first member →</a></p></div>';
+      return;
+    }
+
+    container.innerHTML = '<div class="card"><div class="flex gap-4" style="flex-wrap:wrap">' + members.map(function(m) {
+      return '<div class="flex items-center gap-3">' +
+        '<div class="sidebar-avatar" style="width:40px;height:40px;font-size:14px">' + (m.name || m.email || '?')[0].toUpperCase() + '</div>' +
+        '<div>' +
+          '<div class="font-semibold text-sm">' + escHtml(m.name || m.email || 'Member') + '</div>' +
+          '<span class="badge badge-' + (m.role || 'member') + '">' + (m.role || 'member') + '</span>' +
+        '</div>' +
+      '</div>';
+    }).join('') + '</div></div>';
+  }
+
+  window.handleLogout = async function() {
+    await sb.auth.signOut();
+    window.location.href = 'auth.html';
+  };
+
+  window.toggleSidebar = function() {
+    document.getElementById('sidebar').classList.toggle('open');
+  };
+
+  init();
+</script>
+</body>
+</html>

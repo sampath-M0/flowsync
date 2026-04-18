@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workflow Details — FlowSync</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+
+<div class="loading-overlay" id="loading">
+  <div class="loading-logo">⚡ FlowSync</div>
+  <div class="spinner"></div>
+</div>
+
+<div class="app-layout" id="app" style="display:none">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">⚡</div>
+        <span class="gradient-text">FlowSync</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Main</div>
+      <a href="dashboard.html" class="sidebar-link"><span class="icon">📊</span> Dashboard</a>
+      <a href="workflows.html" class="sidebar-link active"><span class="icon">⚡</span> Workflows</a>
+      <a href="team.html" class="sidebar-link"><span class="icon">👥</span> Team</a>
+      <div class="sidebar-section-title">Insights</div>
+      <a href="analytics.html" class="sidebar-link"><span class="icon">📈</span> Analytics</a>
+      <div class="sidebar-section-title">Account</div>
+      <a href="settings.html" class="sidebar-link"><span class="icon">⚙️</span> Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-plan-box">
+        <div class="sidebar-plan-label">Current Plan</div>
+        <div class="sidebar-plan-name" id="sidebar-plan">Free</div>
+      </div>
+      <div class="sidebar-user" onclick="window.location.href='settings.html'">
+        <div class="sidebar-avatar" id="sidebar-avatar">?</div>
+        <div>
+          <div class="sidebar-user-name" id="sidebar-name">Loading...</div>
+          <div class="sidebar-user-role" id="sidebar-role">Admin</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <div class="topbar-title" id="topbar-wf-title">Workflow Details</div>
+      </div>
+      <div class="topbar-right">
+        <a href="workflows.html" class="btn btn-ghost btn-sm">← Back</a>
+        <button class="btn btn-ghost btn-sm" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="page-content">
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="workflows.html" style="color:var(--text-muted)">Workflows</a>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current" id="bc-title">Loading...</span>
+      </div>
+
+      <!-- Workflow Header -->
+      <div class="card" style="margin-bottom:var(--space-6)">
+        <div class="flex items-center justify-between" style="flex-wrap:wrap; gap:var(--space-4)">
+          <div style="flex:1; min-width:200px">
+            <div class="flex items-center gap-3" style="margin-bottom:var(--space-2)">
+              <h1 style="font-size:1.5rem; font-weight:800" id="wf-title">Loading...</h1>
+              <span class="badge" id="wf-status-badge">—</span>
+            </div>
+            <p class="text-secondary text-sm" id="wf-desc">Loading description...</p>
+            <div class="text-sm text-muted" style="margin-top:8px">
+              <span id="wf-created">Created: —</span> · <span id="wf-updated">Updated: —</span>
+            </div>
+          </div>
+          <div id="wf-admin-actions" class="flex gap-2" style="display:none">
+            <button class="btn btn-secondary btn-sm" onclick="openEditWorkflow()">✏️ Edit</button>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div style="margin-top:var(--space-5)">
+          <div class="workflow-progress-label"><span>Overall Progress</span><span id="wf-pct">0%</span></div>
+          <div class="progress-bar" style="height:10px"><div class="progress-fill" id="wf-progress-bar" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <!-- Steps Section -->
+      <div class="card">
+        <div class="section-header-app" style="margin-bottom:var(--space-5)">
+          <h2>Steps <span class="text-muted text-sm" id="steps-count">(0)</span></h2>
+          <button class="btn btn-primary btn-sm" id="add-step-btn" style="display:none" onclick="openStepModal()">+ Add Step</button>
+        </div>
+
+        <div id="steps-container">
+          <div class="empty-state" style="padding:var(--space-8)">
+            <div class="empty-state-icon">📋</div>
+            <h3>No steps yet</h3>
+            <p>Add a step to break this workflow into manageable tasks.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Edit Workflow Modal -->
+<div class="modal-overlay" id="edit-wf-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Edit Workflow</h3>
+      <button class="modal-close" onclick="closeEditWorkflow()">✕</button>
+    </div>
+    <form onsubmit="saveWorkflow(event)">
+      <div class="flex flex-col gap-4">
+        <div class="form-group">
+          <label class="form-label">Title *</label>
+          <input id="edit-wf-title" type="text" class="form-input" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea id="edit-wf-desc" class="form-input"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select id="edit-wf-status" class="form-select">
+            <option value="not_started">Not Started</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="flex gap-3" style="justify-content:flex-end">
+          <button type="button" class="btn btn-secondary" onclick="closeEditWorkflow()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add/Edit Step Modal -->
+<div class="modal-overlay" id="step-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="step-modal-title">Add Step</h3>
+      <button class="modal-close" onclick="closeStepModal()">✕</button>
+    </div>
+    <form onsubmit="handleSaveStep(event)">
+      <div class="flex flex-col gap-4">
+        <div class="form-group">
+          <label class="form-label">Step Title *</label>
+          <input id="step-title" type="text" class="form-input" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea id="step-desc" class="form-input" placeholder="Optional description"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Assign To</label>
+          <select id="step-assign" class="form-select">
+            <option value="">Unassigned</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select id="step-status" class="form-select">
+            <option value="not_started">Not Started</option>
+            <option value="in_progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Due Date</label>
+          <input id="step-due" type="date" class="form-input" />
+        </div>
+        <div class="flex gap-3" style="justify-content:flex-end">
+          <button type="button" class="btn btn-secondary" onclick="closeStepModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="step-save-btn">Add Step</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase.js"></script>
+<script>
+  var sb = FlowSync.sb;
+  var escHtml = FlowSync.escHtml;
+  var statusLabel = FlowSync.statusLabel;
+  var statusBadgeClass = FlowSync.statusBadgeClass;
+  var formatDate = FlowSync.formatDate;
+  var showToast = FlowSync.showToast;
+
+  var currentUser, profile, org, workflow, steps = [], teamMembers = [];
+  var editStepId = null;
+
+  // Get workflow ID from URL
+  var wfId = new URLSearchParams(window.location.search).get('id');
+  if (!wfId) window.location.href = 'workflows.html';
+
+  async function init() {
+    var session = await FlowSync.requireAuth();
+    if (!session) return;
+    currentUser = session.user;
+    profile = await FlowSync.getProfile(currentUser.id);
+    org = await FlowSync.getUserOrg(currentUser.id);
+
+    var name = (profile && profile.name) || (currentUser.email ? currentUser.email.split('@')[0] : 'User');
+    document.getElementById('sidebar-name').textContent = name;
+    document.getElementById('sidebar-avatar').textContent = name[0].toUpperCase();
+    document.getElementById('sidebar-role').textContent = (profile && profile.role === 'admin') ? 'Admin' : 'Member';
+    var plan = (profile && profile.plan) || 'free';
+    var planEl = document.getElementById('sidebar-plan');
+    planEl.textContent = plan === 'pro' ? '✨ Pro' : '🆓 Free';
+    planEl.className = 'sidebar-plan-name plan-' + plan;
+
+    // Admin actions visibility
+    if (profile && profile.role === 'admin') {
+      document.getElementById('wf-admin-actions').style.display = 'flex';
+      document.getElementById('add-step-btn').style.display = '';
+    }
+
+    // Load team for assignment dropdown
+    if (org) {
+      var tmResult = await sb.from('team_members').select('*').eq('organization_id', org.id);
+      teamMembers = tmResult.data || [];
+      populateAssigneeDropdown();
+    }
+
+    await loadWorkflow();
+    await loadSteps();
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+  }
+
+  function populateAssigneeDropdown() {
+    var sel = document.getElementById('step-assign');
+    sel.innerHTML = '<option value="">Unassigned</option>' +
+      '<option value="owner:' + currentUser.id + '">' + escHtml((profile && profile.name) || currentUser.email) + ' (You)</option>' +
+      teamMembers.map(function(m) {
+        return '<option value="member:' + m.id + '">' + escHtml(m.name || m.email || 'Member') + '</option>';
+      }).join('');
+  }
+
+  function parseAssignee(val) {
+    // Returns { assigned_to, assigned_team_member_id, assigned_to_name }
+    if (!val) return { assigned_to: null, assigned_team_member_id: null, assigned_to_name: null };
+    var parts = val.split(':');
+    if (parts[0] === 'owner') {
+      return { assigned_to: parts[1], assigned_team_member_id: null, assigned_to_name: (profile && profile.name) || currentUser.email };
+    }
+    if (parts[0] === 'member') {
+      var member = teamMembers.find(function(m) { return m.id === parts[1]; });
+      return { assigned_to: null, assigned_team_member_id: parts[1], assigned_to_name: (member && (member.name || member.email)) || 'Member' };
+    }
+    return { assigned_to: null, assigned_team_member_id: null, assigned_to_name: null };
+  }
+
+  function getAssigneeValue(step) {
+    if (step.assigned_to) return 'owner:' + step.assigned_to;
+    if (step.assigned_team_member_id) return 'member:' + step.assigned_team_member_id;
+    return '';
+  }
+
+  async function loadWorkflow() {
+    var result = await sb.from('workflows').select('*').eq('id', wfId).single();
+    if (!result.data) {
+      showToast('Workflow not found', 'error');
+      window.location.href = 'workflows.html';
+      return;
+    }
+    workflow = result.data;
+    document.title = workflow.title + ' — FlowSync';
+    document.getElementById('topbar-wf-title').textContent = workflow.title;
+    document.getElementById('bc-title').textContent = workflow.title;
+    document.getElementById('wf-title').textContent = workflow.title;
+    document.getElementById('wf-desc').textContent = workflow.description || 'No description provided.';
+    var badge = document.getElementById('wf-status-badge');
+    badge.textContent = statusLabel(workflow.status);
+    badge.className = 'badge ' + statusBadgeClass(workflow.status);
+    document.getElementById('wf-created').textContent = 'Created: ' + formatDate(workflow.created_at);
+    document.getElementById('wf-updated').textContent = 'Updated: ' + formatDate(workflow.updated_at || workflow.created_at);
+  }
+
+  async function loadSteps() {
+    var result = await sb.from('steps').select('*').eq('workflow_id', wfId).order('created_at', { ascending: true });
+    steps = result.data || [];
+    renderSteps();
+    updateProgress();
+  }
+
+  function updateProgress() {
+    var total = steps.length;
+    var done = steps.filter(function(s) { return s.status === 'completed'; }).length;
+    var pct = total > 0 ? Math.round((done/total)*100) : 0;
+    document.getElementById('wf-pct').textContent = pct + '%';
+    document.getElementById('wf-progress-bar').style.width = pct + '%';
+    document.getElementById('steps-count').textContent = '(' + done + '/' + total + ')';
+  }
+
+  function renderSteps() {
+    var container = document.getElementById('steps-container');
+    var isAdmin = profile && profile.role === 'admin';
+
+    if (steps.length === 0) {
+      container.innerHTML = '<div class="empty-state" style="padding:var(--space-8)"><div class="empty-state-icon">📋</div><h3>No steps yet</h3><p>Add a step to break this workflow into manageable tasks.</p></div>';
+      return;
+    }
+
+    container.innerHTML = '<table class="steps-table"><thead><tr>' +
+      '<th>Status</th>' +
+      '<th>Step</th>' +
+      '<th>Assigned To</th>' +
+      '<th>Due Date</th>' +
+      (isAdmin ? '<th>Actions</th>' : '') +
+    '</tr></thead><tbody>' +
+    steps.map(function(s, i) {
+      var badgeClass = statusBadgeClass(s.status);
+      var assignee = s.assigned_to_name || 'Unassigned';
+      var due = s.due_date ? formatDate(s.due_date) : '—';
+      var isOverdue = s.due_date && s.status !== 'completed' && new Date(s.due_date) < new Date();
+      return '<tr>' +
+        '<td><span class="badge ' + badgeClass + '">' + statusLabel(s.status) + '</span></td>' +
+        '<td>' +
+          '<div class="font-semibold">' + escHtml(s.title) + '</div>' +
+          (s.description ? '<div class="text-sm text-muted" style="margin-top:2px">' + escHtml(s.description) + '</div>' : '') +
+        '</td>' +
+        '<td>' +
+          '<div class="flex items-center gap-2">' +
+            '<div class="sidebar-avatar" style="width:28px;height:28px;font-size:11px">' + (assignee === 'Unassigned' ? '?' : assignee[0].toUpperCase()) + '</div>' +
+            '<span class="text-sm">' + escHtml(assignee) + '</span>' +
+          '</div>' +
+        '</td>' +
+        '<td>' +
+          '<span class="text-sm' + (isOverdue ? '" style="color:var(--status-danger)"' : '"') + '>' +
+            (isOverdue ? '⚠ ' : '') + due +
+          '</span>' +
+        '</td>' +
+        (isAdmin ? '<td>' +
+          '<div class="flex gap-2">' +
+            '<button class="btn btn-ghost btn-sm" onclick="openEditStep(' + i + ')">✏️</button>' +
+            '<button class="btn btn-sm" style="color:var(--status-danger);background:var(--status-danger-bg)" onclick="deleteStep(\'' + s.id + '\')">🗑</button>' +
+          '</div>' +
+        '</td>' : '') +
+      '</tr>';
+    }).join('') +
+    '</tbody></table>';
+  }
+
+  // ── Step Modal ──
+  window.openStepModal = function() {
+    editStepId = null;
+    document.getElementById('step-modal-title').textContent = 'Add Step';
+    document.getElementById('step-save-btn').textContent = 'Add Step';
+    document.getElementById('step-title').value = '';
+    document.getElementById('step-desc').value = '';
+    document.getElementById('step-assign').value = '';
+    document.getElementById('step-status').value = 'not_started';
+    document.getElementById('step-due').value = '';
+    document.getElementById('step-modal').classList.add('active');
+  };
+
+  window.openEditStep = function(idx) {
+    var s = steps[idx];
+    editStepId = s.id;
+    document.getElementById('step-modal-title').textContent = 'Edit Step';
+    document.getElementById('step-save-btn').textContent = 'Save Changes';
+    document.getElementById('step-title').value = s.title;
+    document.getElementById('step-desc').value = s.description || '';
+    document.getElementById('step-assign').value = getAssigneeValue(s);
+    document.getElementById('step-status').value = s.status;
+    document.getElementById('step-due').value = s.due_date || '';
+    document.getElementById('step-modal').classList.add('active');
+  };
+
+  window.closeStepModal = function() {
+    document.getElementById('step-modal').classList.remove('active');
+  };
+
+  window.handleSaveStep = async function(e) {
+    e.preventDefault();
+    var title = document.getElementById('step-title').value.trim();
+    var description = document.getElementById('step-desc').value.trim();
+    var status = document.getElementById('step-status').value;
+    var due = document.getElementById('step-due').value || null;
+    var assigneeVal = document.getElementById('step-assign').value;
+    var assignee = parseAssignee(assigneeVal);
+
+    var payload = {
+      title: title,
+      description: description || null,
+      status: status,
+      due_date: due,
+      assigned_to: assignee.assigned_to,
+      assigned_team_member_id: assignee.assigned_team_member_id,
+      assigned_to_name: assignee.assigned_to_name
+    };
+
+    var result;
+    if (editStepId) {
+      result = await sb.from('steps').update(payload).eq('id', editStepId);
+    } else {
+      payload.workflow_id = wfId;
+      result = await sb.from('steps').insert(payload);
+    }
+
+    if (result.error) { showToast(result.error.message, 'error'); return; }
+    showToast(editStepId ? 'Step updated!' : 'Step added!', 'success');
+    closeStepModal();
+    await loadSteps();
+  };
+
+  window.deleteStep = async function(id) {
+    if (!confirm('Delete this step?')) return;
+    var result = await sb.from('steps').delete().eq('id', id);
+    if (result.error) { showToast(result.error.message, 'error'); return; }
+    showToast('Step deleted.', 'success');
+    await loadSteps();
+  };
+
+  // ── Edit Workflow ──
+  window.openEditWorkflow = function() {
+    document.getElementById('edit-wf-title').value = workflow.title;
+    document.getElementById('edit-wf-desc').value = workflow.description || '';
+    document.getElementById('edit-wf-status').value = workflow.status;
+    document.getElementById('edit-wf-modal').classList.add('active');
+  };
+
+  window.closeEditWorkflow = function() {
+    document.getElementById('edit-wf-modal').classList.remove('active');
+  };
+
+  window.saveWorkflow = async function(e) {
+    e.preventDefault();
+    var title = document.getElementById('edit-wf-title').value.trim();
+    var desc = document.getElementById('edit-wf-desc').value.trim();
+    var status = document.getElementById('edit-wf-status').value;
+    var result = await sb.from('workflows').update({
+      title: title, description: desc, status: status, updated_at: new Date().toISOString()
+    }).eq('id', wfId);
+    if (result.error) { showToast(result.error.message, 'error'); return; }
+    showToast('Workflow updated!', 'success');
+    closeEditWorkflow();
+    await loadWorkflow();
+  };
+
+  window.handleLogout = async function() {
+    await sb.auth.signOut();
+    window.location.href = 'auth.html';
+  };
+
+  init();
+</script>
+</body>
+</html>

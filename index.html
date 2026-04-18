@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlowSync — SaaS Workflow Management Tool</title>
+  <meta name="description" content="FlowSync helps teams manage workflows, assign tasks, and track progress in real time. Free and Pro plans available." />
+  <meta property="og:title" content="FlowSync — Workflow Management for Modern Teams" />
+  <meta property="og:description" content="Structured workflow management with team collaboration and real-time progress tracking." />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/landing.css" />
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">⚡</div>
+    <span class="gradient-text">FlowSync</span>
+  </a>
+  <div class="nav-links">
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#how-it-works" class="nav-link">How it Works</a>
+    <a href="#pricing" class="nav-link">Pricing</a>
+    <a href="#testimonials" class="nav-link">Testimonials</a>
+  </div>
+  <div class="nav-actions">
+    <a href="auth.html" class="btn btn-ghost btn-sm">Log in</a>
+    <a href="auth.html?mode=signup" class="btn btn-primary btn-sm">Get Started Free</a>
+  </div>
+</nav>
+
+<!-- ── Hero Section ── -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Now with AI-powered workflow suggestions
+    </div>
+
+    <h1 class="hero-title">
+      Manage Workflows.<br />
+      <span class="gradient-text">Ship Faster.</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      FlowSync gives your team a single place to create workflows, assign tasks, and track progress — all with real-time visibility and zero friction.
+    </p>
+
+    <div class="hero-actions">
+      <a href="auth.html?mode=signup" class="btn btn-primary btn-lg" id="hero-cta">
+        ⚡ Start for Free
+      </a>
+      <a href="#features" class="btn btn-secondary btn-lg">
+        See Features →
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-value">10k+</div>
+        <div class="hero-stat-label">Active Teams</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">500k+</div>
+        <div class="hero-stat-label">Tasks Completed</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">99.9%</div>
+        <div class="hero-stat-label">Uptime SLA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── App Preview ── -->
+<div class="hero-preview">
+  <div class="preview-frame">
+    <div class="preview-topbar">
+      <div class="preview-dot preview-dot-red"></div>
+      <div class="preview-dot preview-dot-yellow"></div>
+      <div class="preview-dot preview-dot-green"></div>
+      <div class="preview-url">app.flowsync.io/dashboard</div>
+    </div>
+    <div class="preview-body">
+      <div class="preview-sidebar">
+        <div class="preview-nav-item active">📊 Dashboard</div>
+        <div class="preview-nav-item">⚡ Workflows</div>
+        <div class="preview-nav-item">👥 Team</div>
+        <div class="preview-nav-item">📈 Analytics</div>
+        <div class="preview-nav-item">⚙️ Settings</div>
+      </div>
+      <div class="preview-main">
+        <div class="preview-stats-row">
+          <div class="preview-stat-card">
+            <div class="preview-stat-val">12</div>
+            <div class="preview-stat-lbl">Active Workflows</div>
+          </div>
+          <div class="preview-stat-card">
+            <div class="preview-stat-val">87%</div>
+            <div class="preview-stat-lbl">Completion Rate</div>
+          </div>
+          <div class="preview-stat-card">
+            <div class="preview-stat-val">34</div>
+            <div class="preview-stat-lbl">Pending Tasks</div>
+          </div>
+        </div>
+        <div class="preview-workflow-list">
+          <div class="preview-wf-item">
+            <span class="preview-wf-title">Product Launch Q2</span>
+            <span class="preview-badge-sm preview-badge-green">Completed</span>
+          </div>
+          <div class="preview-wf-item">
+            <span class="preview-wf-title">Marketing Campaign</span>
+            <span class="preview-badge-sm preview-badge-yellow">In Progress</span>
+          </div>
+          <div class="preview-wf-item">
+            <span class="preview-wf-title">Onboarding Flow v2</span>
+            <span class="preview-badge-sm preview-badge-muted">Not Started</span>
+          </div>
+          <div class="preview-wf-item">
+            <span class="preview-wf-title">Engineering Sprint 8</span>
+            <span class="preview-badge-sm preview-badge-yellow">In Progress</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Features Section ── -->
+<section id="features" class="section" style="padding-top: var(--space-24); margin-top: var(--space-16);">
+  <div class="section-header">
+    <div class="section-tag">Features</div>
+    <h2 class="section-title">Everything your team needs</h2>
+    <p class="section-subtitle text-secondary">
+      From workflow creation to team coordination — FlowSync has the tools to keep projects moving.
+    </p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Workflow Management</div>
+      <p class="feature-desc">Create, edit, and delete workflows with custom steps. Track status from Not Started → In Progress → Completed.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">✅</div>
+      <div class="feature-title">Task Assignment</div>
+      <p class="feature-desc">Assign individual steps to team members, set due dates, and watch progress in real time across dashboards.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">👥</div>
+      <div class="feature-title">Team Collaboration</div>
+      <p class="feature-desc">Add team members with Admin or Member roles. Control who can create workflows and assign tasks.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Analytics Dashboard</div>
+      <p class="feature-desc">Pro users get detailed analytics: workflow completion rates, productivity scores, and task timelines.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔐</div>
+      <div class="feature-title">Secure Authentication</div>
+      <p class="feature-desc">Email/password auth powered by Supabase. Sessions are securely managed with row-level security on all data.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🚀</div>
+      <div class="feature-title">Subscription Plans</div>
+      <p class="feature-desc">Start free with up to 3 workflows and 2 team members. Upgrade to Pro for unlimited access and advanced analytics.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── How It Works ── -->
+<section id="how-it-works" class="section">
+  <div class="section-header">
+    <div class="section-tag">How It Works</div>
+    <h2 class="section-title">Up and running in minutes</h2>
+  </div>
+
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <div class="step-title">Sign Up</div>
+      <p class="text-secondary text-sm">Create your account and automatically get the Free plan — no credit card needed.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <div class="step-title">Create Workflows</div>
+      <p class="text-secondary text-sm">Define your workflows with titles, descriptions, and multiple steps.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <div class="step-title">Add Your Team</div>
+      <p class="text-secondary text-sm">Invite team members and assign them roles. Assign steps to the right people.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">4</div>
+      <div class="step-title">Track Progress</div>
+      <p class="text-secondary text-sm">Monitor workflow progress on the dashboard. Upgrade to Pro for advanced analytics.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pricing Section ── -->
+<section id="pricing" class="section">
+  <div class="section-header">
+    <div class="section-tag">Pricing</div>
+    <h2 class="section-title">Simple, transparent plans</h2>
+    <p class="section-subtitle text-secondary">Start free. Scale as your team grows.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <!-- Free Plan -->
+    <div class="pricing-card">
+      <div class="pricing-plan-name">Free</div>
+      <div class="pricing-price gradient-text">$0</div>
+      <div class="pricing-period">per month, forever</div>
+      <div class="pricing-features">
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-check">✓</div>
+          Up to 3 workflows
+        </div>
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-check">✓</div>
+          Up to 2 team members
+        </div>
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-check">✓</div>
+          Basic dashboard
+        </div>
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-check">✓</div>
+          Task assignment
+        </div>
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-cross">✕</div>
+          Analytics dashboard
+        </div>
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-cross">✕</div>
+          Unlimited workflows
+        </div>
+      </div>
+      <a href="auth.html?mode=signup" class="btn btn-secondary w-full">Get Started</a>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="pricing-card featured">
+      <div class="pricing-popular">Most Popular</div>
+      <div class="pricing-plan-name">Pro</div>
+      <div class="pricing-price gradient-text">$19</div>
+      <div class="pricing-period">per month (mock demo)</div>
+      <div class="pricing-features">
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-check">✓</div>
+          Unlimited workflows
+        </div>
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-check">✓</div>
+          Unlimited team members
+        </div>
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-check">✓</div>
+          Advanced analytics
+        </div>
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-check">✓</div>
+          Priority support
+        </div>
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-check">✓</div>
+          Workflow completion reports
+        </div>
+        <div class="pricing-feature">
+          <div class="pricing-feature-icon pricing-check">✓</div>
+          Export & reporting
+        </div>
+      </div>
+      <a href="auth.html?mode=signup" class="btn btn-primary w-full">Start Pro Free Trial</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Testimonials ── -->
+<section id="testimonials" class="section">
+  <div class="section-header">
+    <div class="section-tag">Testimonials</div>
+    <h2 class="section-title">Loved by teams worldwide</h2>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"FlowSync cut our project coordination time in half. The workflow tracking is exactly what we needed."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">SR</div>
+        <div>
+          <div class="testimonial-name">Sarah R.</div>
+          <div class="testimonial-role">Product Manager, TechCorp</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"The role-based access control is perfect for our team. Admins manage, members execute. Simple and powerful."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">JM</div>
+        <div>
+          <div class="testimonial-name">James M.</div>
+          <div class="testimonial-role">Engineering Lead, StartupXYZ</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">"Switched from spreadsheets to FlowSync and never looked back. The dashboard gives us real-time clarity."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">AP</div>
+        <div>
+          <div class="testimonial-name">Anika P.</div>
+          <div class="testimonial-role">Operations, GrowthLabs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA Section ── -->
+<section class="cta-section">
+  <div class="cta-box">
+    <div class="cta-glow"></div>
+    <h2 class="cta-title">
+      Ready to <span class="gradient-text">supercharge</span><br />your team?
+    </h2>
+    <p class="cta-subtitle text-secondary">
+      Join 10,000+ teams already using FlowSync. Start free, no credit card required.
+    </p>
+    <div class="cta-actions">
+      <a href="auth.html?mode=signup" class="btn btn-primary btn-lg" id="cta-bottom">⚡ Get Started Free</a>
+      <a href="auth.html" class="btn btn-secondary btn-lg">Log In</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">⚡</div>
+        <span class="gradient-text">FlowSync</span>
+      </div>
+      <div class="footer-links">
+        <a href="#features" class="footer-link">Features</a>
+        <a href="#pricing" class="footer-link">Pricing</a>
+        <a href="auth.html" class="footer-link">Login</a>
+        <a href="auth.html?mode=signup" class="footer-link">Sign Up</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 FlowSync. Built for Assignment 2 — SaaS Workflow Management Tool. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script>
+  // Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
